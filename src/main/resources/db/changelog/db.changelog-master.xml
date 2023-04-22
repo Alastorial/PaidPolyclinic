@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+
+    <property name="uuid_function" value="gen_random_uuid()" dbms="postgresql"/>
+
+    <include file="create-changeset-polyclinic-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-doctor-table.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

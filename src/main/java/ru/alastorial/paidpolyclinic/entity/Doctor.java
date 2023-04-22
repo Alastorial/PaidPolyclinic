@@ -1,9 +1,27 @@
 package ru.alastorial.paidpolyclinic.entity;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import ru.alastorial.paidpolyclinic.entity.enums.Specialty;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -15,7 +33,8 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "doctor")
-public class Doctor{
+@EntityListeners(AuditingEntityListener.class)
+public class Doctor {
 
     @Id
     @Column(name = "id")
@@ -42,6 +61,14 @@ public class Doctor{
     @Column(name = "created_at")
     private Instant createdAt;
 
-    //TODO связь с поликлиникой
+    @Column
+    @NotNull(message = "Specialty should not be empty")
+    @Enumerated(value = EnumType.STRING)
+    private Specialty specialty;
+
+    @ManyToOne
+    @JoinColumn(name = "polyclinic_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Polyclinic polyclinic;
 
 }
