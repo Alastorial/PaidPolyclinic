@@ -12,47 +12,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.alastorial.paidpolyclinic.dto.AppointmentDto;
-import ru.alastorial.paidpolyclinic.dto.DoctorDto;
-import ru.alastorial.paidpolyclinic.service.DoctorService;
+import ru.alastorial.paidpolyclinic.dto.PatientDto;
+import ru.alastorial.paidpolyclinic.service.PatientService;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/doctors")
+@RequestMapping("/patients")
 @RequiredArgsConstructor
-public class DoctorController {
+public class PatientController {
 
-    private final DoctorService doctorService;
+    private final PatientService patientService;
 
     @GetMapping
-    public List<DoctorDto> getAll() {
-        return doctorService.getAll();
+    public List<PatientDto> getAll() {
+        return patientService.getAll();
     }
 
     @GetMapping("/{id}")
-    public DoctorDto getOne(@PathVariable UUID id) {
-        return doctorService.getById(id);
+    public PatientDto getOne(@PathVariable UUID id) {
+        return patientService.getById(id);
     }
 
     @GetMapping("/{id}/appointments")
-    public List<AppointmentDto> getAllAppointmentsByDoctor(@PathVariable UUID id) {
-        return doctorService.getAppointmentsByDoctorId(id);
+    public List<AppointmentDto> getAllAppointmentsByPatient(@PathVariable UUID id) {
+        return patientService.getAppointmentsByPatientId(id);
     }
 
     @PostMapping
-    public DoctorDto create(@RequestBody @Valid DoctorDto doctorDto) {
-        return doctorService.save(doctorDto);
+    public PatientDto create(@RequestBody @Valid PatientDto patientDto) {
+        return patientService.save(patientDto);
+    }
+
+    @PostMapping("/make-appointment")
+    public PatientDto makeAppointment(@RequestBody @Valid PatientDto patientDto) {
+        return patientService.makeAppointment(patientDto);
     }
 
     @PatchMapping
-    public DoctorDto update(@RequestBody @Valid DoctorDto doctorDto) {
-        return doctorService.save(doctorDto);
+    public PatientDto update(@RequestBody @Valid PatientDto patientDto) {
+        return patientService.save(patientDto);
     }
 
     @DeleteMapping
     public void delete(@RequestParam UUID id) {
-        doctorService.delete(id);
+        patientService.delete(id);
     }
 
 }

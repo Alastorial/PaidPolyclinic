@@ -1,10 +1,11 @@
 package ru.alastorial.paidpolyclinic.entity.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import ru.alastorial.paidpolyclinic.error.BadRequestException;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public enum Specialty {
 
     CHIEF_MEDICAL_OFFICER("Главный врач"),
@@ -16,6 +17,17 @@ public enum Specialty {
     SURGEON("Хирург"),
     ALLERGIST("Аллерголог");
 
-    private final String specialization;
+    private String specialization;
+
+    public static Specialty fromString(String value) {
+        if (value != null) {
+            for (Specialty rt : Specialty.values()) {
+                if (value.equalsIgnoreCase(rt.toString())) {
+                    return rt;
+                }
+            }
+        }
+        throw new BadRequestException("No such specialization");
+    }
 
 }

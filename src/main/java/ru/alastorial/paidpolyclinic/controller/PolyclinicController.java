@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.alastorial.paidpolyclinic.dto.DoctorDto;
 import ru.alastorial.paidpolyclinic.entity.Polyclinic;
 import ru.alastorial.paidpolyclinic.service.PolyclinicService;
 
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/polyclinic")
+@RequestMapping("/polyclinics")
 @RequiredArgsConstructor
 public class PolyclinicController {
 
@@ -32,6 +33,11 @@ public class PolyclinicController {
     @GetMapping("/{id}")
     public Polyclinic getOne(@PathVariable UUID id) {
         return polyclinicService.getById(id);
+    }
+
+    @GetMapping("/{id}/doctors")
+    public List<DoctorDto> getAllDoctorsByPolyclinic(@PathVariable UUID id) {
+        return polyclinicService.getDoctorsByPolyclinicId(id);
     }
 
     @PostMapping

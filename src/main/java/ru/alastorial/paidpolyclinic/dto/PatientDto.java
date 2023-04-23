@@ -1,8 +1,6 @@
 package ru.alastorial.paidpolyclinic.dto;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,13 +11,12 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @Builder
-public class DoctorDto {
+public class PatientDto {
 
     private UUID id;
 
@@ -34,21 +31,6 @@ public class DoctorDto {
 
     @NotEmpty(message = "Email should not be empty")
     private String email;
-
-    @NotNull(message = "Specialty should not be empty")
-    private String specialty;
-
-    @NotEmpty(message = "Work start should not be empty")
-    private String workStart;
-
-    @NotEmpty(message = "Work end should not be empty")
-    private String workEnd;
-
-    @Min(1)
-    private int duration;
-
-    @NotNull(message = "Polyclinic id should not be empty")
-    private UUID polyclinicId;
 
     private Instant createdAt;
 

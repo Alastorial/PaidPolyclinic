@@ -4,8 +4,8 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="create_table_doctor" author="alastorial">
-        <createTable tableName="doctor">
+    <changeSet id="create_table_patient" author="alastorial">
+        <createTable tableName="patient">
             <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -24,28 +24,7 @@
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="specialty" type="varchar(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="polyclinic_id" type="${uuid_type}">
-                <constraints nullable="true"/>
-            </column>
-            <column name="work_start" type="time">
-                <constraints nullable="false"/>
-            </column>
-            <column name="work_end" type="time">
-                <constraints nullable="false"/>
-            </column>
-            <column name="duration" type="int">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
-        <addForeignKeyConstraint baseTableName="doctor"
-                                 baseColumnNames="polyclinic_id"
-                                 constraintName="fk_doctor_polyclinic"
-                                 referencedTableName="polyclinic"
-                                 referencedColumnNames="id"
-                                 onDelete="SET NULL"/>
     </changeSet>
 
 

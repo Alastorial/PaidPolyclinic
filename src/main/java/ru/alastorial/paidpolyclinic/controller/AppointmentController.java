@@ -12,47 +12,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.alastorial.paidpolyclinic.dto.AppointmentDto;
-import ru.alastorial.paidpolyclinic.dto.DoctorDto;
-import ru.alastorial.paidpolyclinic.service.DoctorService;
+import ru.alastorial.paidpolyclinic.service.AppointmentService;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/doctors")
+@RequestMapping("/appointments")
 @RequiredArgsConstructor
-public class DoctorController {
+public class AppointmentController {
 
-    private final DoctorService doctorService;
+    private final AppointmentService appointmentService;
 
     @GetMapping
-    public List<DoctorDto> getAll() {
-        return doctorService.getAll();
+    public List<AppointmentDto> getAll() {
+        return appointmentService.getAll();
     }
 
     @GetMapping("/{id}")
-    public DoctorDto getOne(@PathVariable UUID id) {
-        return doctorService.getById(id);
-    }
-
-    @GetMapping("/{id}/appointments")
-    public List<AppointmentDto> getAllAppointmentsByDoctor(@PathVariable UUID id) {
-        return doctorService.getAppointmentsByDoctorId(id);
+    public AppointmentDto getOne(@PathVariable UUID id) {
+        return appointmentService.getById(id);
     }
 
     @PostMapping
-    public DoctorDto create(@RequestBody @Valid DoctorDto doctorDto) {
-        return doctorService.save(doctorDto);
+    public AppointmentDto create(@RequestBody @Valid AppointmentDto appointmentDto) {
+        return appointmentService.save(appointmentDto);
     }
 
     @PatchMapping
-    public DoctorDto update(@RequestBody @Valid DoctorDto doctorDto) {
-        return doctorService.save(doctorDto);
+    public AppointmentDto update(@RequestBody @Valid AppointmentDto appointmentDto) {
+        return appointmentService.save(appointmentDto);
     }
 
     @DeleteMapping
     public void delete(@RequestParam UUID id) {
-        doctorService.delete(id);
+        appointmentService.delete(id);
     }
+
 
 }

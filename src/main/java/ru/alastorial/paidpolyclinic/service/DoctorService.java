@@ -2,10 +2,12 @@ package ru.alastorial.paidpolyclinic.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.alastorial.paidpolyclinic.dto.AppointmentDto;
 import ru.alastorial.paidpolyclinic.dto.DoctorDto;
 import ru.alastorial.paidpolyclinic.entity.Doctor;
 import ru.alastorial.paidpolyclinic.error.BadRequestException;
 import ru.alastorial.paidpolyclinic.error.NotFoundException;
+import ru.alastorial.paidpolyclinic.mapper.AppointmentMapper;
 import ru.alastorial.paidpolyclinic.mapper.DoctorMapper;
 import ru.alastorial.paidpolyclinic.repository.DoctorRepository;
 import ru.alastorial.paidpolyclinic.repository.PolyclinicRepository;
@@ -23,12 +25,20 @@ public class DoctorService {
 
     private final DoctorMapper doctorMapper;
 
+    private final AppointmentMapper appointmentMapper;
+
     public List<DoctorDto> getAll() {
         return doctorRepository.findAll().stream().map(doctorMapper::toDto).toList();
     }
 
-    public Doctor getById(UUID id) {
-        return doctorRepository.findById(id).orElseThrow(() -> new NotFoundException("Doctor with id " + id + " not found"));
+    public DoctorDto getById(UUID id) {
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new NotFoundException("Doctor with id " + id + " not found"));
+        return doctorMapper.toDto(doctor);
+    }
+
+    public List<AppointmentDto> getAppointmentsByDoctorId(UUID id) {
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(() -> new NotFoundException("Doctor with id " + id + " not found"));
+        return doctor.getAppointments().stream().map(appointmentMapper::toDto).toList();
     }
 
     public DoctorDto save(DoctorDto doctorDto) {

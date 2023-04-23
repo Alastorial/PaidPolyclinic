@@ -10,5 +10,7 @@
 
     <include file="create-changeset-polyclinic-table.xml" relativeToChangelogFile="true"/>
     <include file="create-changeset-doctor-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-patient-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-appointment-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

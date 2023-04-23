@@ -2,9 +2,11 @@ package ru.alastorial.paidpolyclinic.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.alastorial.paidpolyclinic.dto.DoctorDto;
 import ru.alastorial.paidpolyclinic.entity.Polyclinic;
 import ru.alastorial.paidpolyclinic.error.BadRequestException;
 import ru.alastorial.paidpolyclinic.error.NotFoundException;
+import ru.alastorial.paidpolyclinic.mapper.DoctorMapper;
 import ru.alastorial.paidpolyclinic.repository.PolyclinicRepository;
 
 import java.util.List;
@@ -16,12 +18,19 @@ public class PolyclinicService {
 
     private final PolyclinicRepository polyclinicRepository;
 
+    private final DoctorMapper doctorMapper;
+
     public List<Polyclinic> getAll() {
         return polyclinicRepository.findAll();
     }
 
     public Polyclinic getById(UUID id) {
         return polyclinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Polyclinic with id " + id + " not found"));
+    }
+
+    public List<DoctorDto> getDoctorsByPolyclinicId(UUID id) {
+        Polyclinic polyclinic = polyclinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Polyclinic with id " + id + " not found"));
+        return polyclinic.getDoctors().stream().map(doctorMapper::toDto).toList();
     }
 
     public Polyclinic save(Polyclinic polyclinic) {

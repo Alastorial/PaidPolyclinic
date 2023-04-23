@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create_table_appointment" author="alastorial">
+        <createTable tableName="appointment">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="doctor_id" type="${uuid_type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patient_id" type="${uuid_type}">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <addForeignKeyConstraint baseTableName="appointment"
+                                 baseColumnNames="doctor_id"
+                                 constraintName="fk_appointment_doctor"
+                                 referencedTableName="doctor"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="appointment"
+                                 baseColumnNames="patient_id"
+                                 constraintName="fk_appointment_patient"
+                                 referencedTableName="patient"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+    </changeSet>
+
+
+</databaseChangeLog>
