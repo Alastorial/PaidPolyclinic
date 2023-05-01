@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.alastorial.paidpolyclinic.dto.DoctorDto;
+import ru.alastorial.paidpolyclinic.dto.PolyclinicDto;
 import ru.alastorial.paidpolyclinic.entity.Polyclinic;
 import ru.alastorial.paidpolyclinic.service.PolyclinicService;
 
@@ -26,12 +27,12 @@ public class PolyclinicController {
     private final PolyclinicService polyclinicService;
 
     @GetMapping
-    public List<Polyclinic> getAll() {
+    public List<PolyclinicDto> getAll() {
         return polyclinicService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Polyclinic getOne(@PathVariable UUID id) {
+    public PolyclinicDto getOne(@PathVariable UUID id) {
         return polyclinicService.getById(id);
     }
 
@@ -41,12 +42,12 @@ public class PolyclinicController {
     }
 
     @PostMapping
-    public Polyclinic create(@RequestBody @Valid Polyclinic polyclinic) {
+    public PolyclinicDto create(@RequestBody @Valid Polyclinic polyclinic) {
         return polyclinicService.save(polyclinic);
     }
 
     @PatchMapping
-    public Polyclinic update(@RequestBody @Valid Polyclinic polyclinic) {
+    public PolyclinicDto update(@RequestBody @Valid Polyclinic polyclinic) {
         return polyclinicService.save(polyclinic);
     }
 

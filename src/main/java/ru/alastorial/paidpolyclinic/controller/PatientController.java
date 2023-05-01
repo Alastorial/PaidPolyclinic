@@ -45,9 +45,14 @@ public class PatientController {
         return patientService.save(patientDto);
     }
 
-    @PostMapping("/make-appointment")
-    public PatientDto makeAppointment(@RequestBody @Valid PatientDto patientDto) {
-        return patientService.makeAppointment(patientDto);
+    @PostMapping("/appointments")
+    public PatientDto makeAppointment(@RequestParam UUID patientId, @RequestParam UUID appointmentId) {
+        return patientService.makeAppointment(patientId, appointmentId);
+    }
+
+    @DeleteMapping("/appointments")
+    public PatientDto removeAppointment(@RequestParam UUID patientId, @RequestParam UUID appointmentId) {
+        return patientService.removeAppointment(patientId, appointmentId);
     }
 
     @PatchMapping

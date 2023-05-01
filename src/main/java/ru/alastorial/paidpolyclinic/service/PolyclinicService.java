@@ -3,10 +3,12 @@ package ru.alastorial.paidpolyclinic.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.alastorial.paidpolyclinic.dto.DoctorDto;
+import ru.alastorial.paidpolyclinic.dto.PolyclinicDto;
 import ru.alastorial.paidpolyclinic.entity.Polyclinic;
 import ru.alastorial.paidpolyclinic.error.BadRequestException;
 import ru.alastorial.paidpolyclinic.error.NotFoundException;
 import ru.alastorial.paidpolyclinic.mapper.DoctorMapper;
+import ru.alastorial.paidpolyclinic.mapper.PolyclinicMapper;
 import ru.alastorial.paidpolyclinic.repository.PolyclinicRepository;
 
 import java.util.List;
@@ -19,13 +21,14 @@ public class PolyclinicService {
     private final PolyclinicRepository polyclinicRepository;
 
     private final DoctorMapper doctorMapper;
+    private final PolyclinicMapper polyclinicMapper;
 
-    public List<Polyclinic> getAll() {
-        return polyclinicRepository.findAll();
+    public List<PolyclinicDto> getAll() {
+        return polyclinicRepository.findAll().stream().map(polyclinicMapper::toDto).toList();
     }
 
-    public Polyclinic getById(UUID id) {
-        return polyclinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Polyclinic with id " + id + " not found"));
+    public PolyclinicDto getById(UUID id) {
+        return polyclinicMapper.toDto(polyclinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Polyclinic with id " + id + " not found")));
     }
 
     public List<DoctorDto> getDoctorsByPolyclinicId(UUID id) {
@@ -33,12 +36,12 @@ public class PolyclinicService {
         return polyclinic.getDoctors().stream().map(doctorMapper::toDto).toList();
     }
 
-    public Polyclinic save(Polyclinic polyclinic) {
+    public PolyclinicDto save(Polyclinic polyclinic) {
         if (polyclinicRepository.getByName(polyclinic.getName()) != null) {
             throw new BadRequestException("Polyclinic with name " + polyclinic.getName() + " already exists");
         }
 
-        return polyclinicRepository.save(polyclinic);
+        return polyclinicMapper.toDto(polyclinicRepository.save(polyclinic));
     }
 
     public void delete(UUID id) {
