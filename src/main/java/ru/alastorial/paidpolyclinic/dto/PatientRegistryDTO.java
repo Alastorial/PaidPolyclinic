@@ -1,5 +1,7 @@
 package ru.alastorial.paidpolyclinic.dto;
 
+
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +18,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Builder
-public class PatientDto {
+public class PatientRegistryDTO {
 
     private UUID id;
 
@@ -31,6 +33,12 @@ public class PatientDto {
 
     @NotEmpty(message = "Email should not be empty")
     private String email;
+
+    @NotBlank(message = "Необходимо указать логин/имя пользователя")
+    private String username;
+
+    @NotBlank(message = "Необходимо указать пароль")
+    private String password;
 
     private Instant createdAt;
 

@@ -24,6 +24,15 @@
             <column name="created_at" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="username" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

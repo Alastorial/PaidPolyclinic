@@ -37,6 +37,15 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    private String role;
+
     @Column(name = "first_name")
     @NotEmpty(message = "First name should not be empty")
     private String firstName;
