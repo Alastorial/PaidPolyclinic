@@ -1,9 +1,11 @@
 package ru.alastorial.paidpolyclinic.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.alastorial.paidpolyclinic.dto.AppointmentDto;
 import ru.alastorial.paidpolyclinic.dto.PatientRegistryDTO;
 import ru.alastorial.paidpolyclinic.entity.Appointment;
@@ -14,6 +16,7 @@ import ru.alastorial.paidpolyclinic.mapper.AppointmentMapper;
 import ru.alastorial.paidpolyclinic.mapper.PatientMapper;
 import ru.alastorial.paidpolyclinic.repository.AppointmentRepository;
 import ru.alastorial.paidpolyclinic.repository.PatientRepository;
+import ru.alastorial.paidpolyclinic.security.PatientDetails;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,6 +46,7 @@ public class PatientService {
         return patientMapper.toDto(patient);
     }
 
+    @Transactional
     public Patient getByUsername(String username) {
         return patientRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
@@ -64,8 +68,10 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    public PatientRegistryDTO makeAppointment(UUID patientId, UUID appointmentId) {
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new BadRequestException(NO_PATIENT_MESSAGE + patientId));
+    @Transactional
+    public PatientRegistryDTO makeAppointment(UUID appointmentId) {
+        PatientDetails patientDetails = (PatientDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Patient patient = patientDetails.getPatient();
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new BadRequestException("There is no appointment with id: " + appointmentId));
         patient.getAppointments().add(appointment);
         appointment.setPatient(patient);

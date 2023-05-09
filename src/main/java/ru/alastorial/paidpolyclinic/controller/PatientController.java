@@ -46,8 +46,8 @@ public class PatientController {
 //    }
 
     @PostMapping("/appointments")
-    public PatientRegistryDTO makeAppointment(@RequestParam UUID patientId, @RequestParam UUID appointmentId) {
-        return patientService.makeAppointment(patientId, appointmentId);
+    public PatientRegistryDTO makeAppointment(@RequestParam UUID appointmentId) {
+        return patientService.makeAppointment(appointmentId);
     }
 
     @DeleteMapping("/appointments")

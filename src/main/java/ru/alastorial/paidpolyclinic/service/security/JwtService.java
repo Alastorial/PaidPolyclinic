@@ -48,7 +48,7 @@ public class JwtService {
     }
 
     public String generateToken(PatientDetails patientDetails) {
-        return generateToken(Map.of(), patientDetails);
+        return generateToken(Map.of("id", patientDetails.getPatient().getId()), patientDetails);
     }
 
 

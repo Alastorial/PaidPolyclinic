@@ -26,7 +26,6 @@ public class AppointmentDto {
     @NotEmpty(message = "Visit time should not be empty")
     private String time;
 
-    @NotNull(message = "Patient id should not be empty")
     private UUID patientId;
 
     private Instant createdAt;
