@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class AuthenticationRequestDTO {
+public class AuthenticationRequestDto {
 
     @NotBlank(message = "Необходимо указать логин/имя пользователя")
     private String username;

@@ -23,9 +23,7 @@ import java.util.UUID;
 @RequestMapping("/polyclinics")
 @RequiredArgsConstructor
 public class PolyclinicController {
-
     private final PolyclinicService polyclinicService;
-
     @GetMapping
     public List<PolyclinicDto> getAll() {
         return polyclinicService.getAll();

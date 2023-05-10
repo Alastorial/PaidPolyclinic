@@ -2,6 +2,7 @@ package ru.alastorial.paidpolyclinic.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.alastorial.paidpolyclinic.dto.AppointmentDto;
-import ru.alastorial.paidpolyclinic.dto.PatientRegistryDTO;
+import ru.alastorial.paidpolyclinic.dto.PatientRegistryDto;
+import ru.alastorial.paidpolyclinic.dto.PatientResDto;
 import ru.alastorial.paidpolyclinic.service.PatientService;
 
 import java.util.List;
@@ -26,12 +28,12 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    public List<PatientRegistryDTO> getAll() {
+    public List<PatientResDto> getAll() {
         return patientService.getAll();
     }
 
     @GetMapping("/{id}")
-    public PatientRegistryDTO getOne(@PathVariable UUID id) {
+    public PatientResDto getOne(@PathVariable UUID id) {
         return patientService.getById(id);
     }
 
@@ -40,23 +42,20 @@ public class PatientController {
         return patientService.getAppointmentsByPatientId(id);
     }
 
-//    @PostMapping
-//    public PatientRegistryDTO create(@RequestBody @Valid PatientRegistryDTO PatientRegistryDTO) {
-//        return patientService.save(PatientRegistryDTO);
-//    }
-
+    @PreAuthorize("hasAuthority('PATIENT')")
     @PostMapping("/appointments")
-    public PatientRegistryDTO makeAppointment(@RequestParam UUID appointmentId) {
+    public PatientResDto makeAppointment(@RequestParam UUID appointmentId) {
         return patientService.makeAppointment(appointmentId);
     }
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @DeleteMapping("/appointments")
-    public PatientRegistryDTO removeAppointment(@RequestParam UUID patientId, @RequestParam UUID appointmentId) {
-        return patientService.removeAppointment(patientId, appointmentId);
+    public PatientResDto removeAppointment(@RequestParam UUID appointmentId) {
+        return patientService.removeAppointment(appointmentId);
     }
 
     @PatchMapping
-    public PatientRegistryDTO update(@RequestBody @Valid PatientRegistryDTO patientRegistryDTO) {
+    public PatientResDto update(@RequestBody @Valid PatientRegistryDto patientRegistryDTO) {
         return patientService.update(patientRegistryDTO);
     }
 

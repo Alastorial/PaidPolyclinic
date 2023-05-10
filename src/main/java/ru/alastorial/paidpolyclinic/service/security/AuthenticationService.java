@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import ru.alastorial.paidpolyclinic.dto.AuthenticationRequestDTO;
-import ru.alastorial.paidpolyclinic.dto.PatientRegistryDTO;
+import ru.alastorial.paidpolyclinic.dto.AuthenticationRequestDto;
+import ru.alastorial.paidpolyclinic.dto.PatientRegistryDto;
 import ru.alastorial.paidpolyclinic.dto.Token;
 import ru.alastorial.paidpolyclinic.service.PatientService;
 
@@ -18,7 +18,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public Token register(PatientRegistryDTO patientRegistryDTO) {
+    public Token register(PatientRegistryDto patientRegistryDTO) {
 
         var patient = patientService.save(patientRegistryDTO);
         var jwtToken = jwtService.generateToken(patient);
@@ -26,13 +26,13 @@ public class AuthenticationService {
     }
 
     // аутентификация по логину, паролю
-    public Token authenticate(AuthenticationRequestDTO request) {
+    public Token authenticate(AuthenticationRequestDto request) {
         auth(request);
         var user = patientService.getByUsername(request.getUsername());
         return new Token(jwtService.generateToken(user));
     }
 
-    private void auth(AuthenticationRequestDTO request) {
+    private void auth(AuthenticationRequestDto request) {
         // если не получится аутентифицироваться - выкинет исключение
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

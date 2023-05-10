@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.alastorial.paidpolyclinic.dto.AuthenticationRequestDTO;
-import ru.alastorial.paidpolyclinic.dto.PatientRegistryDTO;
+import ru.alastorial.paidpolyclinic.dto.AuthenticationRequestDto;
+import ru.alastorial.paidpolyclinic.dto.PatientRegistryDto;
 import ru.alastorial.paidpolyclinic.dto.Token;
 import ru.alastorial.paidpolyclinic.service.security.AuthenticationService;
 
@@ -23,12 +23,12 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public Token register(@RequestBody @Valid PatientRegistryDTO patient) {
+    public Token register(@RequestBody @Valid PatientRegistryDto patient) {
         return service.register(patient);
     }
 
     @PostMapping("/authenticate")
-    public Token authenticate(@RequestBody @Valid AuthenticationRequestDTO request) {
+    public Token authenticate(@RequestBody @Valid AuthenticationRequestDto request) {
         return service.authenticate(request);
     }
 

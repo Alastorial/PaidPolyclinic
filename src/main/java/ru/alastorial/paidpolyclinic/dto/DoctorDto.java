@@ -47,6 +47,9 @@ public class DoctorDto {
     @Min(1)
     private int duration;
 
+    @Min(1)
+    private int price;
+
     @NotNull(message = "Polyclinic id should not be empty")
     private UUID polyclinicId;
 

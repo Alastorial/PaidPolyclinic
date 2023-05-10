@@ -39,13 +39,16 @@
             <column name="duration" type="int">
                 <constraints nullable="false"/>
             </column>
+            <column name="price" type="int">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addForeignKeyConstraint baseTableName="doctor"
                                  baseColumnNames="polyclinic_id"
                                  constraintName="fk_doctor_polyclinic"
                                  referencedTableName="polyclinic"
                                  referencedColumnNames="id"
-                                 onDelete="SET NULL"/>
+                                />
     </changeSet>
 
 

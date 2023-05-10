@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Builder
-public class PatientRegistryDTO {
+public class PatientRegistryDto {
 
     private UUID id;
 
@@ -41,7 +40,5 @@ public class PatientRegistryDTO {
     private String password;
 
     private Instant createdAt;
-
-    private List<UUID> appointmentsId;
 
 }

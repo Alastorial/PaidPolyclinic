@@ -7,7 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.alastorial.paidpolyclinic.dto.AppointmentDto;
-import ru.alastorial.paidpolyclinic.dto.PatientRegistryDTO;
+import ru.alastorial.paidpolyclinic.dto.PatientRegistryDto;
+import ru.alastorial.paidpolyclinic.dto.PatientResDto;
 import ru.alastorial.paidpolyclinic.entity.Appointment;
 import ru.alastorial.paidpolyclinic.entity.Patient;
 import ru.alastorial.paidpolyclinic.error.BadRequestException;
@@ -37,16 +38,15 @@ public class PatientService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public List<PatientRegistryDTO> getAll() {
+    public List<PatientResDto> getAll() {
         return patientRepository.findAll().stream().map(patientMapper::toDto).toList();
     }
 
-    public PatientRegistryDTO getById(UUID id) {
+    public PatientResDto getById(UUID id) {
         Patient patient = patientRepository.findById(id).orElseThrow(() -> new NotFoundException("Patient with id " + id + " not found"));
         return patientMapper.toDto(patient);
     }
 
-    @Transactional
     public Patient getByUsername(String username) {
         return patientRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
@@ -56,12 +56,12 @@ public class PatientService {
         return patient.getAppointments().stream().map(appointmentMapper::toDto).toList();
     }
 
-    public PatientRegistryDTO update(PatientRegistryDTO patientRegistryDTO) {
+    public PatientResDto update(PatientRegistryDto patientRegistryDTO) {
         Patient patient = patientMapper.toEntity(patientRegistryDTO);
         return patientMapper.toDto(patientRepository.save(patient));
     }
 
-    public Patient save(PatientRegistryDTO patientRegistryDTO) {
+    public Patient save(PatientRegistryDto patientRegistryDTO) {
         Patient patient = patientMapper.toEntity(patientRegistryDTO);
         patient.setPassword(passwordEncoder.encode(patient.getPassword()));
         patient.setRole("PATIENT");
@@ -69,17 +69,22 @@ public class PatientService {
     }
 
     @Transactional
-    public PatientRegistryDTO makeAppointment(UUID appointmentId) {
+    public PatientResDto makeAppointment(UUID appointmentId) {
         PatientDetails patientDetails = (PatientDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Patient patient = patientDetails.getPatient();
+        Patient patient = patientRepository.findById(patientDetails.getPatient().getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        Patient patient = patientDetails.getPatient();
+
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new BadRequestException("There is no appointment with id: " + appointmentId));
-        patient.getAppointments().add(appointment);
+        if (appointment.getPatient() != null)
+            throw new BadRequestException("На данное время уже записан другой пользователь");
         appointment.setPatient(patient);
+        patient.getAppointments().add(appointment);
         return patientMapper.toDto(patientRepository.save(patient));
     }
 
-    public PatientRegistryDTO removeAppointment(UUID patientId, UUID appointmentId) {
-        Patient patient = patientRepository.findById(patientId).orElseThrow(() -> new BadRequestException(NO_PATIENT_MESSAGE + patientId));
+    public PatientResDto removeAppointment(UUID appointmentId) {
+        PatientDetails patientDetails = (PatientDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Patient patient = patientRepository.findById(patientDetails.getPatient().getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new BadRequestException("There is no appointment with id: " + appointmentId));
         patient.getAppointments().remove(appointment);
         appointment.setPatient(null);

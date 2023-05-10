@@ -36,7 +36,7 @@ public class Polyclinic {
     @NotEmpty(message = "Polyclinic name should be empty")
     private String name;
 
-    @OneToMany(mappedBy = "polyclinic", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "polyclinic", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Doctor> doctors;
 
     public List<Doctor> getDoctors() {

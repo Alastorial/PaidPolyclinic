@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
-    public Optional<Patient> findByUsername(String username);
+    Optional<Patient> findByUsername(String username);
 }

@@ -89,6 +89,10 @@ public class Doctor {
     @Min(1)
     private int duration;
 
+    @Column(name = "price")
+    @Min(1)
+    private int price;
+
     @OneToMany(mappedBy = "doctor", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Appointment> appointments;
 
