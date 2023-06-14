@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         var authHeader = request.getHeader("Authorization");
-        if (isBearerAuth(authHeader)) {
+        if (isNotBearerAuth(authHeader)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         getSecurityContext().setAuthentication(authToken);
     }
 
-    private boolean isBearerAuth(String authHeader) {
+    private boolean isNotBearerAuth(String authHeader) {
         return authHeader == null || !authHeader.startsWith("Bearer ");
     }
 }

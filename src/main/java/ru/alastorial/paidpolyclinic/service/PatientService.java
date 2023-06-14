@@ -72,7 +72,6 @@ public class PatientService {
     public PatientResDto makeAppointment(UUID appointmentId) {
         PatientDetails patientDetails = (PatientDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Patient patient = patientRepository.findById(patientDetails.getPatient().getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//        Patient patient = patientDetails.getPatient();
 
         Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new BadRequestException("There is no appointment with id: " + appointmentId));
         if (appointment.getPatient() != null)
